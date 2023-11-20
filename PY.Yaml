@@ -1,0 +1,61 @@
+import pygame
+import yaml
+
+# Load configuration from YAML
+with open("social_media_background.yaml", "r") as config_file:
+    config = yaml.safe_load(config_file)
+
+# Initialize Pygame
+pygame.init()
+
+# Set up the display
+width, height = 800, 600
+screen = pygame.display.set_mode((width, height))
+pygame.display.set_caption("Social Media Background")
+
+# Apply styles from the configuration
+background_color = pygame.Color(config.get("background_color", "#f0f0f0"))
+header_color = pygame.Color(config.get("header_color", "#3498db"))
+text_color = pygame.Color(config.get("text_color", "#333333"))
+link_color = pygame.Color(config.get("link_color", "#27ae60"))
+button_color = pygame.Color(config.get("button_color", "#e74c3c"))
+border_color = pygame.Color(config.get("border_color", "#dddddd"))
+box_shadow = config.get("box_shadow", "0 0 10px rgba(0, 0, 0, 0.1)")
+
+# Main loop
+running = True
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
+    # Clear the screen
+    screen.fill(background_color)
+
+    # Draw header
+    pygame.draw.rect(screen, header_color, (0, 0, width, 100))
+
+    # Draw text
+    font = pygame.font.Font(None, 36)
+    text_surface = font.render("Welcome to Social Media!", True, text_color)
+    text_rect = text_surface.get_rect(center=(width // 2, height // 2))
+    screen.blit(text_surface, text_rect)
+
+    # Draw link
+    link_font = pygame.font.Font(None, 24)
+    link_surface = link_font.render("Click here", True, link_color)
+    link_rect = link_surface.get_rect(center=(width // 2, height // 2 + 50))
+    screen.blit(link_surface, link_rect)
+
+    # Draw button
+    button_rect = pygame.Rect(width // 2 - 50, height - 100, 100, 50)
+    pygame.draw.rect(screen, button_color, button_rect)
+
+    # Draw border
+    pygame.draw.rect(screen, border_color, button_rect, 2)
+
+    # Update the display
+    pygame.display.flip()
+
+# Quit Pygame
+pygame.quit()
